@@ -230,7 +230,7 @@ public class ItempropPlacer : EditorWindow
             Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
             foreach (Collider coli in GhostinCollider)
             {
-                Debug.Log(coli);
+                //Debug.Log(coli);
                 GameObject.DestroyImmediate(coli);
             }
         }
@@ -272,7 +272,7 @@ public class ItempropPlacer : EditorWindow
         }
         else
         {
-            Debug.LogError("スポーン先が未指定です。一括設定か個別指定をしてください。 Says PYEditor/ItempropPlacer");
+            Debug.LogError("スポーン先が未指定です。一括指定か個別指定をしてください。 Says PYEditor/ItempropPlacer");
         }
     }
 }
