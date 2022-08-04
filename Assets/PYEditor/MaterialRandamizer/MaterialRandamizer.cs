@@ -9,7 +9,7 @@ public class MaterialRandamaizer : EditorWindow
 {
     public Transform TargetObjects = null;
 
-    public List<Material> MatArray = new List<Material>(3);
+    public List<Material> MatArray = new List<Material>(0);
 
     [MenuItem("PYEditor/MaterialRandamaizer")]
 
