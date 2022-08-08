@@ -4,11 +4,13 @@ using UnityEditor;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 public class PropPlacer_Editor : EditorWindow
 {
     public Vector2 scrollPos_Prefab;
     public Vector2 scrollPos_Menu;
+    public int UISize = 65;
 
     //Dropdownlist
     public string[] RotationMode = new string[] { "オリジナル", "視点", "スナップ45", "垂直スナップ45", "ランダムY", "ランダムXYZ" };
@@ -38,7 +40,7 @@ public class PropPlacer_Editor : EditorWindow
     public bool Buttontoggle = true;
 
     //Debug
-    public List<GameObject> MatArray = new List<GameObject>(0);
+
 
     [MenuItem("PYEditor/PropPlacer")]
 
@@ -49,6 +51,7 @@ public class PropPlacer_Editor : EditorWindow
 
     public void OnGUI()
     {
+        /*
         //ScriptableObjectの取得
         var guids = UnityEditor.AssetDatabase.FindAssets("t:propplacerDB");
         if (guids.Length == 0)
@@ -58,8 +61,8 @@ public class PropPlacer_Editor : EditorWindow
 
         var path = AssetDatabase.GUIDToAssetPath(guids[0]);
         var ljhgv = AssetDatabase.LoadAssetAtPath<PropPlacerDB>(path);
+        */
 
-        var UISize = 65;
 
         //-----全体横配置
         EditorGUILayout.BeginHorizontal();
@@ -68,16 +71,13 @@ public class PropPlacer_Editor : EditorWindow
         EditorGUILayout.BeginVertical();
 
         //-----Prefab要素横配置
-        using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Prefab, GUILayout.Height(150)))
+        using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Prefab, GUILayout.Height(150), GUILayout.Height(UISize * 1.7f)))
         {
             scrollPos_Prefab = scrollView.scrollPosition;
 
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical();
 
-            for (int i = 0; i < MatArray.Count; i++)
-            {
-                MatArray[i] = (GameObject)EditorGUILayout.ObjectField("Material" + i, MatArray[i], typeof(GameObject), false);
-            }
+            EditorGUILayout.BeginHorizontal();
 
             for (int i = 0; i < SetPrefabs.Count; i++)
             {
@@ -101,11 +101,12 @@ public class PropPlacer_Editor : EditorWindow
 
                 EditorGUILayout.Space(5);
             }
+
+            EditorGUILayout.HelpBox("aaa", MessageType.Info);
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
         }
         //-----Prefab要素横配置オワリ
-
-        EditorGUILayout.HelpBox("aaa", MessageType.Info);
 
         EditorGUILayout.EndVertical();
         //=====InfoBox用縦配置オワリ
@@ -152,16 +153,10 @@ public class PropPlacer_Editor : EditorWindow
 
             //-----増減ボタン横並び
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("＋",GUILayout.Width(UISize)))
-            {
-                SetPrefabs.Add(null);
-                PrefabTex.Add(null);
-                PrefabPlacepoints.Add(null);
-            }
 
-            if (SetPrefabs.Count != 1)
+            if (GUILayout.Button("－", GUILayout.Width(UISize)))
             {
-                if (GUILayout.Button("－", GUILayout.Width(UISize)))
+                if (SetPrefabs.Count > 1)
                 {
                     int count = SetPrefabs.Count - 1;
                     SetPrefabs.RemoveAt(count);
@@ -169,12 +164,28 @@ public class PropPlacer_Editor : EditorWindow
                     PrefabPlacepoints.RemoveAt(count);
                 }
             }
+
+            if (GUILayout.Button("＋",GUILayout.Width(UISize)))
+            {
+                SetPrefabs.Add(null);
+                PrefabTex.Add(null);
+                PrefabPlacepoints.Add(null);
+            }
+
             GUILayout.EndHorizontal();
             //-----増減ボタン横並びオワリ
 
+            UISize = EditorGUILayout.IntField("UISize", UISize,GUILayout.Width(UISize * 2));
+
+            if (UISize < 29)
+            {
+                UISize = 30;
+            }
+
             EditorGUILayout.EndVertical();
+            //=====メニュー縦配置オワリ
         }
-        //=====メニュー縦配置オワリ
+
 
 
         EditorGUILayout.EndHorizontal();
@@ -219,10 +230,6 @@ public class PropPlacer_Editor : EditorWindow
     public void PrefabGhost()
     {
         //updateで実行
-        if (Input.GetKey(KeyCode.A))
-        {
-            Debug.Log("hogehogehogehoge");
-        }
 
         //ゴーストの位置を更新する
         if (GhostProp == null)
@@ -247,8 +254,6 @@ public class PropPlacer_Editor : EditorWindow
             float depth = -15;
             var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth);
             GhostProp.transform.position = SceneRaycam.ScreenToWorldPoint(pos);
-
-
         }
     }
 
