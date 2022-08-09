@@ -10,18 +10,18 @@ public class PropPlacer_Editor : EditorWindow
 {
     public Vector2 scrollPos_Prefab;
     public Vector2 scrollPos_Menu;
-    public int UISize = 65;
+    public int UISize = 100;
 
     //Dropdownlist
-    public string[] RotationMode = new string[] { "オリジナル", "視点", "スナップ45", "垂直スナップ45", "ランダムY", "ランダムXYZ" };
+    public string[] RotationMode = new string[] { "オリジナル", "視点", "スナップ", "ランダム" };
     public int RotationModeInt = 0;
-    public string[] PositionMode = new string[] { "ベーシック", "端数切捨て", "スナップ0.5", "スナップ1", "ノイズ" };
+    public string[] PositionMode = new string[] { "ベーシック", "端数切捨て", "スナップ", "ランダム" };
     public int PositionModeInt = 0;
     public string[] PositioningMode = new string[] { "マウスベース", "視点ベース" };
     public int PositioningModeInt = 0;
 
     //Raycast
-    Camera SceneRaycam = UnityEditor.SceneView.lastActiveSceneView.camera;
+    Camera SceneRaycam;
     public Vector3 ViewPos = new Vector3(0.5f, 0.5f, 0);
 
     //Prefabselector
@@ -38,6 +38,7 @@ public class PropPlacer_Editor : EditorWindow
     public GameObject GhostProp;
     public bool TryBool = true;
     public bool Buttontoggle = true;
+    public bool RunStatus = true;
 
     //Debug
 
@@ -48,22 +49,8 @@ public class PropPlacer_Editor : EditorWindow
     {
         GetWindow<PropPlacer_Editor>("PropPlacer");
     }
-
     public void OnGUI()
     {
-        /*
-        //ScriptableObjectの取得
-        var guids = UnityEditor.AssetDatabase.FindAssets("t:propplacerDB");
-        if (guids.Length == 0)
-        {
-            throw new System.IO.FileNotFoundException("propplacerDB does not found");
-        }
-
-        var path = AssetDatabase.GUIDToAssetPath(guids[0]);
-        var ljhgv = AssetDatabase.LoadAssetAtPath<PropPlacerDB>(path);
-        */
-
-
         //-----全体横配置
         EditorGUILayout.BeginHorizontal();
 
@@ -71,11 +58,9 @@ public class PropPlacer_Editor : EditorWindow
         EditorGUILayout.BeginVertical();
 
         //-----Prefab要素横配置
-        using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Prefab, GUILayout.Height(150), GUILayout.Height(UISize * 1.7f)))
+        using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Prefab, GUILayout.Height(150), GUILayout.Height(UISize * 2f)))
         {
             scrollPos_Prefab = scrollView.scrollPosition;
-
-            EditorGUILayout.BeginVertical();
 
             EditorGUILayout.BeginHorizontal();
 
@@ -95,18 +80,26 @@ public class PropPlacer_Editor : EditorWindow
                
                 EditorGUILayout.Space(5);
 
-                PrefabPlacepoints[i] = (Transform)EditorGUILayout.ObjectField("", PrefabPlacepoints[i], typeof(Transform), false, GUILayout.Width(UISize));
+                PrefabPlacepoints[i] = (Transform)EditorGUILayout.ObjectField("", PrefabPlacepoints[i], typeof(Transform), true, GUILayout.Width(UISize));
 
                 EditorGUILayout.EndVertical();
 
                 EditorGUILayout.Space(5);
             }
 
-            EditorGUILayout.HelpBox("aaa", MessageType.Info);
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.EndVertical();
         }
         //-----Prefab要素横配置オワリ
+
+
+        if (PrefabPlacepoints[SelectPrefabNum] != null)
+        {
+            EditorGUILayout.HelpBox("aaa", MessageType.Info, true);
+        }
+        else
+        {
+            EditorGUILayout.HelpBox("このPrefabはスポーン先に一括設定が使用されます。", MessageType.Warning,true);
+        }
 
         EditorGUILayout.EndVertical();
         //=====InfoBox用縦配置オワリ
@@ -144,13 +137,6 @@ public class PropPlacer_Editor : EditorWindow
 
             EditorGUILayout.Space(5);
 
-            if (GUILayout.Button("レッツプレース！(Q)", GUILayout.Width(UISize * 2)))
-            {
-                //PlaceProp();
-            }
-
-            EditorGUILayout.Space(5);
-
             //-----増減ボタン横並び
             GUILayout.BeginHorizontal();
 
@@ -175,6 +161,33 @@ public class PropPlacer_Editor : EditorWindow
             GUILayout.EndHorizontal();
             //-----増減ボタン横並びオワリ
 
+            if (RunStatus)
+            {
+                if (GUILayout.Button("STOP!!",GUILayout.Width(UISize * 2)))
+                {
+                    OnDisable();
+                    RunStatus = !RunStatus;
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("START!!",GUILayout.Width(UISize * 2)))
+                {
+                    OnEnable();
+                    RunStatus = !RunStatus;
+                }
+            }
+
+            EditorGUILayout.Space(5);
+
+            if (GUILayout.Button("レッツプレース！(Q)", GUILayout.Width(UISize * 2)))
+            {
+                //PlaceProp();
+            }
+
+            EditorGUILayout.Space(5);
+
+            //UISize調整　30以下には出来ない
             UISize = EditorGUILayout.IntField("UISize", UISize,GUILayout.Width(UISize * 2));
 
             if (UISize < 29)
@@ -191,29 +204,33 @@ public class PropPlacer_Editor : EditorWindow
         EditorGUILayout.EndHorizontal();
         //-----全体横配置オワリ
 
-
         //ゴーストの変更
         if (GUI.changed)
         {
-            //GhostReload();
+            GhostReload();
 
             //サムネイル更新
             for (int i = 0; i < SetPrefabs.Count; i++)
             {
-                PrefabTex[i] = AssetPreview.GetAssetPreview(SetPrefabs[i]);
+                if(SetPrefabs[i] != null)
+                {
+                    PrefabTex[i] = AssetPreview.GetAssetPreview(SetPrefabs[i]);
+                }
+                else
+                {
+                    //Debug.LogError("itsnull");
+                }
             }
         }
     }
-
     private void OnDisable()
-    {
-        EditorApplication.update -= PrefabGhost;
+    {        
+        SceneView.duringSceneGui -= PropPlacer_Update;
         DestroyImmediate(GhostProp);
     }
-
     private void OnEnable()
     {
-        EditorApplication.update += PrefabGhost;
+        SceneView.duringSceneGui += PropPlacer_Update;
 
         if (SetPrefabs.Count > 0)
         {
@@ -226,16 +243,21 @@ public class PropPlacer_Editor : EditorWindow
             PrefabPlacepoints.Add(null);
         }
     }
-
-    public void PrefabGhost()
+    public void PropPlacer_Update(SceneView sceneView)
     {
         //updateで実行
 
-        //ゴーストの位置を更新する
+        //Nullチェック達
         if (GhostProp == null)
         {
             GhostReload();
         }
+        if (SceneRaycam == null)
+        {
+            SceneRaycam = UnityEditor.SceneView.lastActiveSceneView.camera;
+        }
+
+        //ゴーストの位置を更新する
         else if (SetPrefabs[SelectPrefabNum] != null && PositioningModeInt == 1)
         {
             //視点モード
@@ -255,8 +277,16 @@ public class PropPlacer_Editor : EditorWindow
             var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth);
             GhostProp.transform.position = SceneRaycam.ScreenToWorldPoint(pos);
         }
-    }
 
+
+        //ショートカットキー
+        var keyinput = Event.current;
+
+        if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.Q)
+        {
+            PlaceProp();
+        }
+    }
     public void GhostReload()
     {
         //ゴーストのリロード用
@@ -270,7 +300,6 @@ public class PropPlacer_Editor : EditorWindow
             Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
             foreach (Collider coli in GhostinCollider)
             {
-                Debug.Log(coli);
                 GameObject.DestroyImmediate(coli);
             }
         }
@@ -282,7 +311,6 @@ public class PropPlacer_Editor : EditorWindow
             }
         }
     }
-
     public void PlaceProp()
     {
         Transform parent = null;
@@ -291,8 +319,8 @@ public class PropPlacer_Editor : EditorWindow
         if (PrefabPlacepoints[SelectPrefabNum] != null)
         {
             //スポーン先が個別指定されている場合
+            //個別指定が優先される
             parent = PrefabPlacepoints[SelectPrefabNum];
-
         }
         else if (DefaultPoint != null)
         {
@@ -305,10 +333,10 @@ public class PropPlacer_Editor : EditorWindow
         {
             LatestProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]);
 
-            Undo.RecordObject(LatestProp.gameObject, "PropPlace");
-
             LatestProp.transform.SetParent(parent);
-            LatestProp.transform.SetPositionAndRotation(GhostProp.transform.position, GhostProp.transform.localRotation);
+            LatestProp.transform.SetPositionAndRotation(GhostProp.transform.position, GhostProp.transform.rotation);
+
+            Undo.RegisterCreatedObjectUndo(LatestProp.gameObject, "PropPlace");
         }
         else
         {
