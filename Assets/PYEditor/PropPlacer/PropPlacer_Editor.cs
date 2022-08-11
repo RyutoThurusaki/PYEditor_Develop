@@ -180,9 +180,9 @@ public class PropPlacer_Editor : EditorWindow
 
             EditorGUILayout.Space(5);
 
-            if (GUILayout.Button("レッツプレース！(Q)", GUILayout.Width(UISize * 2)))
+            if (GUILayout.Button("レッツプレース！(F)", GUILayout.Width(UISize * 2)))
             {
-                //PlaceProp();
+                PlaceProp();
             }
 
             EditorGUILayout.Space(5);
@@ -282,7 +282,7 @@ public class PropPlacer_Editor : EditorWindow
         //ショートカットキー
         var keyinput = Event.current;
 
-        if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.Q)
+        if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
         {
             PlaceProp();
         }
