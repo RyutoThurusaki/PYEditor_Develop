@@ -11,6 +11,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: 16e430a2578e61b468d6a37d417a0fe7, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
+  - _BILLBOARD_ALL
   - _BILLBOARD_Y_AXIS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -42,9 +43,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 0.8, y: 0.8}
+        m_Offset: {x: 0.1, y: 0.1}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -59,9 +60,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BILLBOARD: 2
+    - _BILLBOARD: 0
     - _BumpScale: 1
-    - _Cutoff: 0
+    - _Cutoff: 0.186
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _GlossMapScale: 1

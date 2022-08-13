@@ -3,11 +3,40 @@ Shader "Standard/TextureMix"
     Properties
     {
         _TexRed ("Albedo_R", 2D) = "red" {}
+        [NoScaleOffset][Normal]
+        _NormalRed ("Normal_R", 2D) = "bump" {}
+
+         [Space(20)]
+
         _TexGreen ("Albedo_G", 2D) = "green" {}
+        [NoScaleOffset][Normal]
+        _NormalGreen ("Normal_G", 2D) = "bump" {}
+
+         [Space(20)]
+
         _TexBlue ("Albedo_B", 2D) = "blue" {}
-        _MixStrength ("Strength", Range(1,1000)) = 1.0
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
+        [NoScaleOffset][Normal]
+        _NormalBlue ("Normal_B", 2D) = "bump" {}
+
+         [Space(20)]
+
+        _MixStrength ("Strength", Range(1,10)) = 1.0
+        _DiscardLine ("DiscardLine", Range(0,1)) = 0.4
+
+         [Space(20)]
+
+        _Glossiness_R ("Smoothness_Red", Range(0,1)) = 0.5
+        _Metallic_R ("Metallic_Red", Range(0,1)) = 0.0
+
+         [Space(20)]
+
+        _Glossiness_G ("Smoothness_Green", Range(0,1)) = 0.5
+        _Metallic_G ("Metallic_Green", Range(0,1)) = 0.0
+
+         [Space(20)]
+
+        _Glossiness_B ("Smoothness_Blue", Range(0,1)) = 0.5
+        _Metallic_B ("Metallic_Blue", Range(0,1)) = 0.0
     }
     SubShader
     {
@@ -23,6 +52,10 @@ Shader "Standard/TextureMix"
         sampler2D _TexGreen;
         sampler2D _TexBlue;
 
+        sampler2D _NormalRed;
+        sampler2D _NormalGreen;
+        sampler2D _NormalBlue;
+
         struct Input
         {
             float2 uv_TexRed;
@@ -33,12 +66,17 @@ Shader "Standard/TextureMix"
             float4 vertColor;
         };
 
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
+        half _Glossiness_R;
+        half _Metallic_R;
+        half _Glossiness_G;
+        half _Metallic_G;
+        half _Glossiness_B;
+        half _Metallic_B;
+
         float4 vertColor;
 
         half _MixStrength;
+        half _DiscardLine;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -55,21 +93,30 @@ Shader "Standard/TextureMix"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-            //頂点カラーに応じてテクスチャを加減
-            half rv = clamp(IN.vertColor.r * _MixStrength, 0, 0.5);
-            fixed4 r = tex2D (_TexRed, IN.uv_TexRed) * rv;
 
-            half gv = clamp(IN.vertColor.g * _MixStrength, 0, 0.5);
-            fixed4 g = tex2D (_TexGreen, IN.uv_TexGreen) * gv;
+            //頂点カラーからテクスチャの濃度を計算
+            half negar = clamp((IN.vertColor.r - _DiscardLine ) * (_MixStrength * 5), 0, 1);
+            half negag = clamp((IN.vertColor.g - _DiscardLine ) * (_MixStrength * 5), 0, 1);
+            half negab = clamp((IN.vertColor.b - _DiscardLine ) * (_MixStrength * 5), 0, 1);
 
-            half bv = clamp(IN.vertColor.b * _MixStrength, 0, 0.5);
-            fixed4 b = tex2D (_TexBlue, IN.uv_TexBlue) * bv;
+            //頂点カラーに応じてAlbedoテクスチャを加減
+            fixed4 ar = tex2D (_TexRed, IN.uv_TexRed);
+            fixed4 ag = tex2D (_TexGreen, IN.uv_TexGreen);
+            fixed4 ab = tex2D (_TexBlue, IN.uv_TexBlue);
 
-            o.Albedo = r + g + b * _MixStrength;
+            o.Albedo = ar * negar + ag * negag + ab * negab;
 
-            // Metallic and smoothness come from slider variables
-            o.Metallic = _Metallic;
-            o.Smoothness = _Glossiness;
+            //頂点カラーに応じてAlbedoテクスチャを加減
+            fixed4 nr = tex2D (_NormalRed, IN.uv_TexRed);
+            fixed4 ng = tex2D (_NormalGreen, IN.uv_TexGreen);
+            fixed4 nb = tex2D (_NormalBlue, IN.uv_TexBlue);
+
+            o.Normal = nr * negar + ng * negag + nb * negab;
+
+            //頂点カラーに応じてメタリックを加減
+            o.Metallic = _Metallic_R * negar + _Metallic_G * negag + _Metallic_B * negab;
+            o.Smoothness = _Glossiness_R * negar + _Glossiness_G * negag + _Glossiness_B * negab;
+
             o.Alpha = 1;
         }
         ENDCG

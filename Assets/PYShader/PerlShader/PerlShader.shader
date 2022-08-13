@@ -2,7 +2,7 @@ Shader "Unlit/PerlShader"
 {
     Properties
     {
-        [KeywordEnum(ALL,DisallowZRoll)] _BILLBOARD("Billboard Mode", Float) = 2
+        [KeywordEnum(ALL,DisallowZRoll)] _BILLBOARD("Billboard Mode", Float) = 0
         _MainTex ("Texture", 2D) = "white" {}
         _Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
     }
