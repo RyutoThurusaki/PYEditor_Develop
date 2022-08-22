@@ -104,14 +104,18 @@ Shader "Standard/TextureMix"
             fixed4 ag = tex2D (_TexGreen, IN.uv_TexGreen);
             fixed4 ab = tex2D (_TexBlue, IN.uv_TexBlue);
 
-            o.Albedo = ar * negar + ag * negag + ab * negab;
+            //o.Albedo = ar * negar + ag * negag + ab * negab;
+            fixed4 car = lerp(ag,ar,negar);
+            o.Albedo = lerp(car,ab,negab);
 
-            //頂点カラーに応じてAlbedoテクスチャを加減
+            //頂点カラーに応じてNormalテクスチャを加減
             fixed4 nr = tex2D (_NormalRed, IN.uv_TexRed);
             fixed4 ng = tex2D (_NormalGreen, IN.uv_TexGreen);
             fixed4 nb = tex2D (_NormalBlue, IN.uv_TexBlue);
 
-            o.Normal = nr * negar + ng * negag + nb * negab;
+            fixed4 cnr = lerp(ng,nr,negar);
+            fixed4 cnb = lerp(cnr,nb,negab);
+            o.Normal= UnpackNormal(cnb);
 
             //頂点カラーに応じてメタリックを加減
             o.Metallic = _Metallic_R * negar + _Metallic_G * negag + _Metallic_B * negab;

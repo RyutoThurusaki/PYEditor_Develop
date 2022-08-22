@@ -25,11 +25,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalBlue:
-        m_Texture: {fileID: 2800000, guid: c083c262fc1468d4c9131309868d7657, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalGreen:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c083c262fc1468d4c9131309868d7657, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalRed:
@@ -37,29 +37,29 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TexBlue:
-        m_Texture: {fileID: 2800000, guid: d1fe6d877ddf54b4ca398c2f55de768b, type: 3}
-        m_Scale: {x: 2, y: 5}
+        m_Texture: {fileID: 2800000, guid: e6f8aed5fae7be54bbf9d8e2754a4687, type: 3}
+        m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _TexGreen:
-        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
-        m_Scale: {x: 15, y: 15}
+        m_Texture: {fileID: 2800000, guid: d1fe6d877ddf54b4ca398c2f55de768b, type: 3}
+        m_Scale: {x: 5, y: 5}
         m_Offset: {x: 0, y: 0}
     - _TexRed:
-        m_Texture: {fileID: 2800000, guid: d62dbe5bd352e874dba5bfab432610dc, type: 3}
-        m_Scale: {x: 5, y: 5}
+        m_Texture: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 9, y: 9}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DiscardLine: 0.5
+    - _DiscardLine: 0.48
     - _Glossiness: 0
-    - _Glossiness_B: 1
-    - _Glossiness_G: 0.5
+    - _Glossiness_B: 0
+    - _Glossiness_G: 1
     - _Glossiness_R: 1
     - _Metallic: 0
-    - _Metallic_B: 1
-    - _Metallic_G: 0
-    - _Metallic_R: 1
-    - _MixStrength: 10
+    - _Metallic_B: 0
+    - _Metallic_G: 1
+    - _Metallic_R: 0
+    - _MixStrength: 1
     m_Colors:
     - _Bugcolor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
