@@ -14,13 +14,10 @@ Shader "Standard/TextureMix"
 
          [Space(20)]
 
-        _TexBlue ("Albedo_B", 2D) = "blue" {}
-        [NoScaleOffset][Normal]
-        _NormalBlue ("Normal_B", 2D) = "bump" {}
+        _Color ("ShadeColor", Color) = (1,1,1,1)
 
-         [Space(20)]
-
-        _MixStrength ("Strength", Range(1,10)) = 1.0
+        _MixStrength ("MixStrength", Range(1,10)) = 1.0
+        _ShadeStrength("ShadeStrength", Range(0,1)) = 1.0
         _DiscardLine ("DiscardLine", Range(0,1)) = 0.4
 
          [Space(20)]
@@ -33,10 +30,7 @@ Shader "Standard/TextureMix"
         _Glossiness_G ("Smoothness_Green", Range(0,1)) = 0.5
         _Metallic_G ("Metallic_Green", Range(0,1)) = 0.0
 
-         [Space(20)]
-
-        _Glossiness_B ("Smoothness_Blue", Range(0,1)) = 0.5
-        _Metallic_B ("Metallic_Blue", Range(0,1)) = 0.0
+        
     }
     SubShader
     {
@@ -50,11 +44,11 @@ Shader "Standard/TextureMix"
 
         sampler2D _TexRed;
         sampler2D _TexGreen;
-        sampler2D _TexBlue;
+
+        fixed4 _Color;
 
         sampler2D _NormalRed;
         sampler2D _NormalGreen;
-        sampler2D _NormalBlue;
 
         struct Input
         {
@@ -70,12 +64,11 @@ Shader "Standard/TextureMix"
         half _Metallic_R;
         half _Glossiness_G;
         half _Metallic_G;
-        half _Glossiness_B;
-        half _Metallic_B;
 
         float4 vertColor;
 
         half _MixStrength;
+        half _ShadeStrength;
         half _DiscardLine;
 
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
@@ -93,33 +86,29 @@ Shader "Standard/TextureMix"
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-
             //頂点カラーからテクスチャの濃度を計算
             half negar = clamp((IN.vertColor.r - _DiscardLine ) * (_MixStrength * 5), 0, 1);
             half negag = clamp((IN.vertColor.g - _DiscardLine ) * (_MixStrength * 5), 0, 1);
-            half negab = clamp((IN.vertColor.b - _DiscardLine ) * (_MixStrength * 5), 0, 1);
 
             //頂点カラーに応じてAlbedoテクスチャを加減
             fixed4 ar = tex2D (_TexRed, IN.uv_TexRed);
             fixed4 ag = tex2D (_TexGreen, IN.uv_TexGreen);
-            fixed4 ab = tex2D (_TexBlue, IN.uv_TexBlue);
 
-            //o.Albedo = ar * negar + ag * negag + ab * negab;
+            //o.Albedo = ar * negar + ag * negag;
+            //Blue頂点に応じたShadeカラーのミックス
             fixed4 car = lerp(ag,ar,negar);
-            o.Albedo = lerp(car,ab,negab);
+            o.Albedo = lerp(car,_Color,IN.vertColor.b * _Color.a);
 
             //頂点カラーに応じてNormalテクスチャを加減
             fixed4 nr = tex2D (_NormalRed, IN.uv_TexRed);
             fixed4 ng = tex2D (_NormalGreen, IN.uv_TexGreen);
-            fixed4 nb = tex2D (_NormalBlue, IN.uv_TexBlue);
 
             fixed4 cnr = lerp(ng,nr,negar);
-            fixed4 cnb = lerp(cnr,nb,negab);
-            o.Normal= UnpackNormal(cnb);
+            o.Normal= UnpackNormal(cnr);
 
             //頂点カラーに応じてメタリックを加減
-            o.Metallic = _Metallic_R * negar + _Metallic_G * negag + _Metallic_B * negab;
-            o.Smoothness = _Glossiness_R * negar + _Glossiness_G * negag + _Glossiness_B * negab;
+            o.Metallic = _Metallic_R * negar + _Metallic_G * negag - IN.vertColor.b * _ShadeStrength;
+            o.Smoothness = _Glossiness_R * negar + _Glossiness_G * negag - IN.vertColor.b * _ShadeStrength;
 
             o.Alpha = 1;
         }
