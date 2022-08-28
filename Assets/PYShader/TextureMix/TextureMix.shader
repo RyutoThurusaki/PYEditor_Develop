@@ -14,7 +14,7 @@ Shader "Standard/TextureMix"
 
          [Space(20)]
 
-        _Color ("ShadeColor", Color) = (1,1,1,1)
+        _ShadeColor ("ShadeColor", Color) = (1,1,1,1)
 
         _MixStrength ("MixStrength", Range(1,10)) = 1.0
         _ShadeStrength("ShadeStrength", Range(0,1)) = 1.0
@@ -45,7 +45,7 @@ Shader "Standard/TextureMix"
         sampler2D _TexRed;
         sampler2D _TexGreen;
 
-        fixed4 _Color;
+        fixed4 _ShadeColor;
 
         sampler2D _NormalRed;
         sampler2D _NormalGreen;
@@ -58,6 +58,8 @@ Shader "Standard/TextureMix"
 
             float3 viewDir;
             float4 vertColor;
+
+            float2 lightmapUV;
         };
 
         half _Glossiness_R;
@@ -82,6 +84,8 @@ Shader "Standard/TextureMix"
         void vert(inout appdata_full v, out Input o){
 			UNITY_INITIALIZE_OUTPUT(Input, o);
 			o.vertColor = v.color;
+
+			o.lightmapUV = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 		}
 
         void surf (Input IN, inout SurfaceOutputStandard o)
@@ -97,7 +101,7 @@ Shader "Standard/TextureMix"
             //o.Albedo = ar * negar + ag * negag;
             //Blue頂点に応じたShadeカラーのミックス
             fixed4 car = lerp(ag,ar,negar);
-            o.Albedo = lerp(car,_Color,IN.vertColor.b * _Color.a);
+            o.Albedo = lerp(car,_ShadeColor,IN.vertColor.b * _ShadeColor.a * _ShadeStrength);
 
             //頂点カラーに応じてNormalテクスチャを加減
             fixed4 nr = tex2D (_NormalRed, IN.uv_TexRed);
@@ -109,6 +113,10 @@ Shader "Standard/TextureMix"
             //頂点カラーに応じてメタリックを加減
             o.Metallic = _Metallic_R * negar + _Metallic_G * negag - IN.vertColor.b * _ShadeStrength;
             o.Smoothness = _Glossiness_R * negar + _Glossiness_G * negag - IN.vertColor.b * _ShadeStrength;
+
+            half3 lightmap = DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_Lightmap, IN.lightmapUV));
+			o.Occlusion = lightmap;
+
 
             o.Alpha = 1;
         }

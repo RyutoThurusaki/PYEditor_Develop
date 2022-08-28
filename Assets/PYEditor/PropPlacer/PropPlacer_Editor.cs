@@ -77,7 +77,7 @@ public class PropPlacer_Editor : EditorWindow
                 EditorGUILayout.Space(5);
 
                 SetPrefabs[i] = (GameObject)EditorGUILayout.ObjectField("", SetPrefabs[i], typeof(GameObject), false, GUILayout.Width(UISize), GUILayout.Height(20));
-               
+
                 EditorGUILayout.Space(5);
 
                 PrefabPlacepoints[i] = (Transform)EditorGUILayout.ObjectField("", PrefabPlacepoints[i], typeof(Transform), true, GUILayout.Width(UISize));
@@ -98,7 +98,7 @@ public class PropPlacer_Editor : EditorWindow
         }
         else
         {
-            EditorGUILayout.HelpBox("このPrefabはスポーン先に一括設定が使用されます。", MessageType.Warning,true);
+            EditorGUILayout.HelpBox("このPrefabはスポーン先に一括設定が使用されます。", MessageType.Warning, true);
         }
 
         EditorGUILayout.EndVertical();
@@ -151,7 +151,7 @@ public class PropPlacer_Editor : EditorWindow
                 }
             }
 
-            if (GUILayout.Button("＋",GUILayout.Width(UISize)))
+            if (GUILayout.Button("＋", GUILayout.Width(UISize)))
             {
                 SetPrefabs.Add(null);
                 PrefabTex.Add(null);
@@ -163,7 +163,7 @@ public class PropPlacer_Editor : EditorWindow
 
             if (RunStatus)
             {
-                if (GUILayout.Button("STOP!!",GUILayout.Width(UISize * 2)))
+                if (GUILayout.Button("STOP!!", GUILayout.Width(UISize * 2)))
                 {
                     OnDisable();
                     RunStatus = !RunStatus;
@@ -171,7 +171,7 @@ public class PropPlacer_Editor : EditorWindow
             }
             else
             {
-                if (GUILayout.Button("START!!",GUILayout.Width(UISize * 2)))
+                if (GUILayout.Button("START!!", GUILayout.Width(UISize * 2)))
                 {
                     OnEnable();
                     RunStatus = !RunStatus;
@@ -188,7 +188,7 @@ public class PropPlacer_Editor : EditorWindow
             EditorGUILayout.Space(5);
 
             //UISize調整　30以下には出来ない
-            UISize = EditorGUILayout.IntField("UISize", UISize,GUILayout.Width(UISize * 2));
+            UISize = EditorGUILayout.IntField("UISize", UISize, GUILayout.Width(UISize * 2));
 
             if (UISize < 29)
             {
@@ -212,7 +212,7 @@ public class PropPlacer_Editor : EditorWindow
             //サムネイル更新
             for (int i = 0; i < SetPrefabs.Count; i++)
             {
-                if(SetPrefabs[i] != null)
+                if (SetPrefabs[i] != null)
                 {
                     PrefabTex[i] = AssetPreview.GetAssetPreview(SetPrefabs[i]);
                 }
@@ -224,7 +224,7 @@ public class PropPlacer_Editor : EditorWindow
         }
     }
     private void OnDisable()
-    {        
+    {
         SceneView.duringSceneGui -= PropPlacer_Update;
         DestroyImmediate(GhostProp);
     }
@@ -271,46 +271,28 @@ public class PropPlacer_Editor : EditorWindow
         }
         else if (SetPrefabs[SelectPrefabNum] != null && PositioningModeInt == 0)
         {
+
+            RaycastHit hit;
+
             //マウスモード
             var ray = SceneRaycam.ViewportPointToRay(Input.mousePosition);
-            float depth = -15;
-            var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth);
-            GhostProp.transform.position = SceneRaycam.ScreenToWorldPoint(pos);
-        }
+            float depth = 15;
+            //var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth);
+            GhostProp.transform.position = SceneRaycam.ScreenToWorldPoint(Input.mousePosition);
 
 
-        //ショートカットキー
-        var keyinput = Event.current;
 
-        if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
-        {
-            PlaceProp();
-        }
-    }
-    public void GhostReload()
-    {
-        //ゴーストのリロード用
-        if (SetPrefabs[SelectPrefabNum] != null)
-        {
-            DestroyImmediate(GhostProp);
 
-            GhostProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]) as GameObject;
+            //ショートカットキー
+            var keyinput = Event.current;
 
-            //ゴーストのコライダーを削除
-            Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
-            foreach (Collider coli in GhostinCollider)
+            if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
             {
-                GameObject.DestroyImmediate(coli);
-            }
-        }
-        else
-        {
-            if (GhostProp != null)
-            {
-                DestroyImmediate(GhostProp);
+                PlaceProp();
             }
         }
     }
+
     public void PlaceProp()
     {
         Transform parent = null;
@@ -341,6 +323,31 @@ public class PropPlacer_Editor : EditorWindow
         else
         {
             Debug.LogError("スポーン先が未指定です。一括指定か個別指定をしてください。 Says PYEditor/PropPlacerDB");
+        }
+    }
+
+    private void GhostReload()
+    {
+        //ゴーストのリロード用
+        if (SetPrefabs[SelectPrefabNum] != null)
+        {
+            DestroyImmediate(GhostProp);
+
+            GhostProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]) as GameObject;
+
+            //ゴーストのコライダーを削除
+            Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
+            foreach (Collider coli in GhostinCollider)
+            {
+                GameObject.DestroyImmediate(coli);
+            }
+        }
+        else
+        {
+            if (GhostProp != null)
+            {
+                DestroyImmediate(GhostProp);
+            }
         }
     }
 }
