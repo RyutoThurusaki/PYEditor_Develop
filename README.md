@@ -8,15 +8,19 @@ Unity 2019.4.31f1で制作・動作確認
 なにかあればissuesにお願いします  
   
 # How to use
-リポジトリをクローンするか、右上・緑色の”Code”をクリックして”Download ZIP"します。  
+導入したいプロジェクトに、Githubから直接Cloneします。  
   
-クローンするか、ダウンロード後解凍したフォルダを開くと  
-PYEditor_Develop/Assets/  
-にエディタ拡張とシェーダーがあります。必要なものをお使いのプロジェクトにD&Dでインポートしてください。  
+  ![CloneSample](https://user-images.githubusercontent.com/41750783/201712861-b7899502-b4a4-4d22-8e48-8c393feb5c37.png)
   
-インポートに成功すると画面上のツールバーに"PYEditor"と項目が追加されます。  
+1. GithubDesktopを開き、左上の"File"→"Clone Repository..."をクリック。  
+2. URLタブを選択。上の画像と同じウィンドウが出ます。  
+3. URLのところに https://github.com/RyutoThurusaki/PYEditor_Develop.git をペースト。  
+4. Local Pathには導入したいプロジェクトのAssetsフォルダを指定します。  
+5. Cloneボタンをクリック、対象のUnityプロジェクトを開き、ツールバーに"PYEditor"とタブが出ていれば成功です。  
   
-※Githubのページから必要なものだけ直接DLしても大丈夫
+SourceTreeなどの場合は自分でやり方調べてください。  
+  
+更新がある場合は上記でクローンしたRepositoryを管理ツールでFetchしてPullすると最新版になります。
 
 # 完成品  
 - InactiveCollidersearcher  
@@ -45,4 +49,3 @@ This software is released under the MIT license.
 https://opensource.org/licenses/MIT
 
 Assets以外のフォルダに入っているアセット/コードに関してはそれぞれのライセンスに準拠します。
-
