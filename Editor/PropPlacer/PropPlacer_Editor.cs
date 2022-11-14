@@ -8,40 +8,52 @@ using System.Text.RegularExpressions;
 
 public class PropPlacer_Editor : EditorWindow
 {
-    public Vector2 scrollPos_Prefab;
-    public Vector2 scrollPos_Menu;
-    public int UISize = 100;
+    private Vector2 scrollPos_Prefab;
+    private Vector2 scrollPos_Menu;
+    private int UISize = 100;
 
     //Dropdownlist
-    public string[] RotationMode = new string[] { "オリジナル", "視点", "スナップ", "ランダム" };
-    public int RotationModeInt = 0;
-    public string[] PositionMode = new string[] { "ベーシック", "端数切捨て", "スナップ", "ランダム" };
-    public int PositionModeInt = 0;
-    public string[] PositioningMode = new string[] { "マウスベース", "視点ベース" };
-    public int PositioningModeInt = 0;
+    private string[] PositioningModes = new string[] { "マウスベース", "視点ベース" };
+    private int PositioningModeInt = 0;
+    private string[] RotationModes = new string[] { "オリジナル", "スナップ", "ランダム" };
+    private int RotationModeInt = 0;
+    private string[] PositionModes = new string[] { "ベーシック",  "スナップ", "ランダム" };
+    private int PositionModeInt = 0;
+    private string[] Uisizeints = new string[] { "30", "40", "50", "60"};
+    private int UisizeModeint = 0;
+
+    //VectorsSetting
+    private Vector2 Rotatesnap;
+    private Vector3 Rotaterandam;
+    private Vector3 Positionsnap;
+    private Vector3 Positionrandam;
+
+    private Vector3 RandamResult;
 
     //Raycast
     Camera SceneRaycam;
-    public Vector3 ViewPos = new Vector3(0.5f, 0.5f, 0);
+    private Vector3 ViewPos = new Vector3(0.5f, 0.5f, 0);
 
     //Prefabselector
-    public List<GameObject> SetPrefabs = new List<GameObject>(0);
-    public List<Texture> PrefabTex = new List<Texture>(0);
-    public int SelectPrefabNum = 0;
+    private List<GameObject> SetPrefabs = new List<GameObject>(0);
+    private List<Texture> PrefabTex = new List<Texture>(0);
+    private int SelectPrefabNum = 0;
 
     //Spownsetting
-    public List<Transform> PrefabPlacepoints = new List<Transform>(10);
-    public Transform DefaultPoint;
-    public GameObject LatestProp;
+    private List<Transform> PrefabPlacepoints = new List<Transform>(10);
+    private Transform DefaultPoint;
+    private GameObject LatestProp;
+    private bool RoundedDown = false;
 
     //Situation
-    public GameObject GhostProp;
-    public bool TryBool = true;
-    public bool Buttontoggle = true;
-    public bool RunStatus = true;
+    private GameObject GhostProp;
+    private GameObject ParentProp;
+    private bool TryBool = true;
+    private bool Buttontoggle = true;
+    private bool RunStatus = true;
 
     //Debug
-
+    int count = 0;
 
     [MenuItem("PYEditor/PropPlacer")]
 
@@ -94,7 +106,7 @@ public class PropPlacer_Editor : EditorWindow
 
         if (PrefabPlacepoints[SelectPrefabNum] != null)
         {
-            EditorGUILayout.HelpBox("aaa", MessageType.Info, true);
+            EditorGUILayout.HelpBox("個別設定でスポーンします。", MessageType.Info, true);
         }
         else
         {
@@ -121,21 +133,45 @@ public class PropPlacer_Editor : EditorWindow
 
             //Positioning設定
             EditorGUILayout.LabelField("ポジションモード");
-            PositioningModeInt = EditorGUILayout.Popup("", PositioningModeInt, PositioningMode, GUILayout.Width(UISize * 2));
+            PositioningModeInt = EditorGUILayout.Popup("", PositioningModeInt, PositioningModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
             //回転姿勢の指定
             EditorGUILayout.LabelField("Rotation挙動");
-            RotationModeInt = EditorGUILayout.Popup("", RotationModeInt, RotationMode, GUILayout.Width(UISize * 2));
+            RotationModeInt = EditorGUILayout.Popup("", RotationModeInt, RotationModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
-            //回転姿勢の指定
+            if (RotationModeInt == 1)
+            {
+                Rotatesnap = EditorGUILayout.Vector2Field("スナップの角度", Rotatesnap, GUILayout.Width(UISize * 2));
+            }
+            else if (RotationModeInt == 2)
+            {
+                Rotaterandam = EditorGUILayout.Vector3Field("ランダムの角度", Rotaterandam, GUILayout.Width(UISize * 2));
+            }
+            EditorGUILayout.Space(5);
+
+
+            //座標の指定
             EditorGUILayout.LabelField("Position挙動");
-            PositionModeInt = EditorGUILayout.Popup("", PositionModeInt, PositionMode, GUILayout.Width(UISize * 2));
+            PositionModeInt = EditorGUILayout.Popup("", PositionModeInt, PositionModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
+
+            if (PositionModeInt == 1)
+            {
+                Positionsnap = EditorGUILayout.Vector3Field("スナップの角度", Positionsnap, GUILayout.Width(UISize * 2));
+            }
+            else if (PositionModeInt == 2)
+            {
+                Positionrandam = EditorGUILayout.Vector3Field("ランダムの角度", Positionrandam, GUILayout.Width(UISize * 2));
+            }
+
+            EditorGUILayout.Space(5);
+
+
 
             //-----増減ボタン横並び
             GUILayout.BeginHorizontal();
@@ -176,7 +212,7 @@ public class PropPlacer_Editor : EditorWindow
                     OnEnable();
                     RunStatus = !RunStatus;
                 }
-            }
+            } 
 
             EditorGUILayout.Space(5);
 
@@ -189,7 +225,6 @@ public class PropPlacer_Editor : EditorWindow
 
             //UISize調整　30以下には出来ない
             UISize = EditorGUILayout.IntField("UISize", UISize, GUILayout.Width(UISize * 2));
-
             if (UISize < 29)
             {
                 UISize = 30;
@@ -198,8 +233,6 @@ public class PropPlacer_Editor : EditorWindow
             EditorGUILayout.EndVertical();
             //=====メニュー縦配置オワリ
         }
-
-
 
         EditorGUILayout.EndHorizontal();
         //-----全体横配置オワリ
@@ -223,10 +256,12 @@ public class PropPlacer_Editor : EditorWindow
             }
         }
     }
+
     private void OnDisable()
     {
         SceneView.duringSceneGui -= PropPlacer_Update;
         DestroyImmediate(GhostProp);
+        DestroyImmediate(ParentProp);
     }
     private void OnEnable()
     {
@@ -242,8 +277,9 @@ public class PropPlacer_Editor : EditorWindow
             PrefabTex.Add(null);
             PrefabPlacepoints.Add(null);
         }
-    }
-    public void PropPlacer_Update(SceneView sceneView)
+    } 
+
+    private void PropPlacer_Update(SceneView sceneView)
     {
         //updateで実行
 
@@ -257,39 +293,84 @@ public class PropPlacer_Editor : EditorWindow
             SceneRaycam = UnityEditor.SceneView.lastActiveSceneView.camera;
         }
 
+        //Key input
+        //ショートカットキー
+        var keyinput = Event.current;
+
         //ゴーストの位置を更新する
-        else if (SetPrefabs[SelectPrefabNum] != null && PositioningModeInt == 1)
+        if (SetPrefabs[SelectPrefabNum] != null)
         {
-            //視点モード
-            var ray = SceneRaycam.ViewportPointToRay(ViewPos);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
+            //PositionUpdate
+             if (PositioningModeInt == 0)
             {
-                GhostProp.transform.position = hit.point;
+                //マウスモード
+                Vector3 subtract = new Vector3(Event.current.mousePosition.x, Screen.height - Event.current.mousePosition.y - 40, 0);
+                Ray ray = SceneRaycam.ScreenPointToRay(subtract);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    ParentProp.transform.position = hit.point;
+
+                    if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
+                    {
+                        PlaceProp();
+                        RandamResult = Vec3Random(Rotaterandam);
+                    }
+                }
+
+                GhostProp.transform.localPosition = Vector3.zero;
+
             }
-        }
-        else if (SetPrefabs[SelectPrefabNum] != null && PositioningModeInt == 0)
-        {
-
-            RaycastHit hit;
-
-            //マウスモード
-            var ray = SceneRaycam.ViewportPointToRay(Input.mousePosition);
-            float depth = 15;
-            //var pos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, depth);
-            GhostProp.transform.position = SceneRaycam.ScreenToWorldPoint(Input.mousePosition);
-
-
-
-
-            //ショートカットキー
-            var keyinput = Event.current;
-
-            if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
+            else if (PositioningModeInt == 1)
             {
-                PlaceProp();
+                //視点モード
+                var ray = SceneRaycam.ViewportPointToRay(ViewPos);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    ParentProp.transform.position = hit.point;
+
+                    if (keyinput.type == EventType.KeyDown && keyinput.keyCode == KeyCode.F)
+                    {
+                        PlaceProp();
+                        RandamResult = Vec3Random(Rotaterandam);
+                    }
+                }
+
+                GhostProp.transform.localPosition = Vector3.zero;
+
             }
+
+
+             //RotationUpdate
+             if (RotationModeInt == 0)
+            {
+                //オリジナル
+
+            }
+             else if (RotationModeInt == 1)
+            {
+                //スナップ
+
+                var tra = GhostProp.transform;
+                var targetY = ParentProp.transform.InverseTransformPoint(SceneRaycam.transform.position);
+                var targetX = GhostProp.transform.InverseTransformPoint(SceneRaycam.transform.position);
+
+                Quaternion angleY = Quaternion.AngleAxis(Mathf.Atan2(targetY.x, targetY.z) * Mathf.Rad2Deg, Vector3.up);
+                Quaternion angleX = Quaternion.AngleAxis(Mathf.Atan2(targetX.z, targetX.y) * Mathf.Rad2Deg, Vector3.right);
+
+                //ParentProp.transform.rotation.y + angleY
+                ParentProp.transform.rotation = QuaRound(ParentProp.transform.rotation * angleY, Rotatesnap.y);
+                GhostProp.transform.localRotation = QuaRound(GhostProp.transform.localRotation * angleX, Rotatesnap.x);
+
+            }
+            else if (RotationModeInt == 2)
+            {
+                //ランダム
+                GhostProp.transform.rotation = Quaternion.Euler(RandamResult);
+            }
+
         }
     }
 
@@ -301,7 +382,7 @@ public class PropPlacer_Editor : EditorWindow
         if (PrefabPlacepoints[SelectPrefabNum] != null)
         {
             //スポーン先が個別指定されている場合
-            //個別指定が優先される
+            //個別指定が優先される　else ifなことに注意
             parent = PrefabPlacepoints[SelectPrefabNum];
         }
         else if (DefaultPoint != null)
@@ -328,12 +409,22 @@ public class PropPlacer_Editor : EditorWindow
 
     private void GhostReload()
     {
+        //親を生成
+        if (ParentProp == null)
+        {
+            ParentProp = new GameObject("Dont delete this_PYEditor");
+        }
+        Debug.Log("Ghost Refresh say PYEditor");
         //ゴーストのリロード用
         if (SetPrefabs[SelectPrefabNum] != null)
         {
             DestroyImmediate(GhostProp);
 
             GhostProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]) as GameObject;
+
+            //ゴーストの初期化
+            GhostProp.transform.SetParent(ParentProp.transform);
+            GhostProp.transform.position = new Vector3(0, 0, 0);
 
             //ゴーストのコライダーを削除
             Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
@@ -349,6 +440,34 @@ public class PropPlacer_Editor : EditorWindow
                 DestroyImmediate(GhostProp);
             }
         }
+    }
+
+    private Vector3 Vec3Random(Vector3 snap)
+    {
+        Vector3 randamvec = new Vector3(
+                                                                Random.Range(1, 361),
+                                                                Random.Range(1, 361),
+                                                                Random.Range(1, 361)
+                                                                );
+
+        return Vec3Round(randamvec, 0, snap);
+    }
+
+    private Quaternion QuaRound(Quaternion quain, float cut)
+    {
+        Vector3 src = quain.eulerAngles;
+        Vector3 dst = Vec3Round(src, cut);
+        return Quaternion.Euler(dst);
+    }
+
+    private Vector3 Vec3Round(Vector3 vecin, float cut = 0, Vector3 veccut = default(Vector3))
+    {
+        //veccut省略時は(0,0,0)で初期化される
+        Vector3 dst = new Vector3(
+                                            Mathf.Round(vecin.x / (cut + veccut.x)) * (cut + veccut.x),
+                                            Mathf.Round(vecin.y / (cut + veccut.y)) * (cut + veccut.y),
+                                            Mathf.Round(vecin.z / (cut + veccut.z)) * (cut + veccut.x));
+        return dst;
     }
 }
 #endif
