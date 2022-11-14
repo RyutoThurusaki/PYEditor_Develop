@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TextureMix
+  m_Shader: {fileID: 4800000, guid: ab04f2e348f9d27498b88e02a6914292, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalBlue:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalGreen:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalRed:
+        m_Texture: {fileID: 2800000, guid: c083c262fc1468d4c9131309868d7657, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TexBlue:
+        m_Texture: {fileID: 2800000, guid: e6f8aed5fae7be54bbf9d8e2754a4687, type: 3}
+        m_Scale: {x: 4, y: 4}
+        m_Offset: {x: 0, y: 0}
+    - _TexGreen:
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 5, y: 5}
+        m_Offset: {x: 0, y: 0}
+    - _TexRed:
+        m_Texture: {fileID: 2800000, guid: d1fe6d877ddf54b4ca398c2f55de768b, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _DiscardLine: 0.376
+    - _Glossiness: 0
+    - _Glossiness_B: 0
+    - _Glossiness_G: 1
+    - _Glossiness_R: 0
+    - _Metallic: 0
+    - _Metallic_B: 0
+    - _Metallic_G: 1
+    - _Metallic_R: 0
+    - _MixStrength: 1
+    - _ShadeStrength: 1
+    m_Colors:
+    - _Bugcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0.68235296}
+    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadeColor: {r: 0, g: 0, b: 0, a: 0.72156864}
+  m_BuildTextureStacks: []
