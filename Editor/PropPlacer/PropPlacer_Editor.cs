@@ -13,11 +13,11 @@ public class PropPlacer_Editor : EditorWindow
     private int UISize = 100;
 
     //Dropdownlist
-    private string[] PositioningModes = new string[] { "ƒ}ƒEƒXƒx[ƒX", "‹“_ƒx[ƒX" };
+    private string[] PositioningModes = new string[] { "ãƒã‚¦ã‚¹ãƒ™ãƒ¼ã‚¹", "è¦–ç‚¹ãƒ™ãƒ¼ã‚¹" };
     private int PositioningModeInt = 0;
-    private string[] RotationModes = new string[] { "ƒIƒŠƒWƒiƒ‹", "ƒXƒiƒbƒv", "ƒ‰ƒ“ƒ_ƒ€" };
+    private string[] RotationModes = new string[] { "ã‚ªãƒªã‚¸ãƒŠãƒ«", "ã‚¹ãƒŠãƒƒãƒ—", "ãƒ©ãƒ³ãƒ€ãƒ " };
     private int RotationModeInt = 0;
-    private string[] PositionModes = new string[] { "ƒx[ƒVƒbƒN",  "ƒXƒiƒbƒv", "ƒ‰ƒ“ƒ_ƒ€" };
+    private string[] PositionModes = new string[] { "ãƒ™ãƒ¼ã‚·ãƒƒã‚¯",  "ã‚¹ãƒŠãƒƒãƒ—", "ãƒ©ãƒ³ãƒ€ãƒ " };
     private int PositionModeInt = 0;
     private string[] Uisizeints = new string[] { "30", "40", "50", "60"};
     private int UisizeModeint = 0;
@@ -63,13 +63,13 @@ public class PropPlacer_Editor : EditorWindow
     }
     public void OnGUI()
     {
-        //-----‘S‘Ì‰¡”z’u
+        //-----å…¨ä½“æ¨ªé…ç½®
         EditorGUILayout.BeginHorizontal();
 
-        //=====InfoBox—pc”z’u
+        //=====InfoBoxç”¨ç¸¦é…ç½®
         EditorGUILayout.BeginVertical();
 
-        //-----Prefab—v‘f‰¡”z’u
+        //-----Prefabè¦ç´ æ¨ªé…ç½®
         using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Prefab, GUILayout.Height(150), GUILayout.Height(UISize * 2f)))
         {
             scrollPos_Prefab = scrollView.scrollPosition;
@@ -101,22 +101,22 @@ public class PropPlacer_Editor : EditorWindow
 
             EditorGUILayout.EndHorizontal();
         }
-        //-----Prefab—v‘f‰¡”z’uƒIƒƒŠ
+        //-----Prefabè¦ç´ æ¨ªé…ç½®ã‚ªãƒ¯ãƒª
 
 
         if (PrefabPlacepoints[SelectPrefabNum] != null)
         {
-            EditorGUILayout.HelpBox("ŒÂ•Êİ’è‚ÅƒXƒ|[ƒ“‚µ‚Ü‚·B", MessageType.Info, true);
+            EditorGUILayout.HelpBox("å€‹åˆ¥è¨­å®šã§ã‚¹ãƒãƒ¼ãƒ³ã—ã¾ã™ã€‚", MessageType.Info, true);
         }
         else
         {
-            EditorGUILayout.HelpBox("‚±‚ÌPrefab‚ÍƒXƒ|[ƒ“æ‚ÉˆêŠ‡İ’è‚ªg—p‚³‚ê‚Ü‚·B", MessageType.Warning, true);
+            EditorGUILayout.HelpBox("ã“ã®Prefabã¯ã‚¹ãƒãƒ¼ãƒ³å…ˆã«ä¸€æ‹¬è¨­å®šãŒä½¿ç”¨ã•ã‚Œã¾ã™ã€‚", MessageType.Warning, true);
         }
 
         EditorGUILayout.EndVertical();
-        //=====InfoBox—pc”z’uƒIƒƒŠ
+        //=====InfoBoxç”¨ç¸¦é…ç½®ã‚ªãƒ¯ãƒª
 
-        //=====ƒƒjƒ…[c”z’u
+        //=====ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç¸¦é…ç½®
         using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPos_Menu, GUILayout.Width(UISize * 2.3f)))
         {
             scrollPos_Menu = scrollView.scrollPosition;
@@ -125,58 +125,58 @@ public class PropPlacer_Editor : EditorWindow
 
             EditorGUILayout.Space(5);
 
-            //ˆêŠ‡‚ÅƒXƒ|[ƒ“æ‚ğİ’è‚·‚éƒtƒB[ƒ‹ƒh
-            EditorGUILayout.LabelField("ƒXƒ|[ƒ“æˆêŠ‡İ’è");
+            //ä¸€æ‹¬ã§ã‚¹ãƒãƒ¼ãƒ³å…ˆã‚’è¨­å®šã™ã‚‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+            EditorGUILayout.LabelField("ã‚¹ãƒãƒ¼ãƒ³å…ˆä¸€æ‹¬è¨­å®š");
             DefaultPoint = (Transform)EditorGUILayout.ObjectField("", DefaultPoint, typeof(Transform), true, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
-            //Positioningİ’è
-            EditorGUILayout.LabelField("ƒ|ƒWƒVƒ‡ƒ“ƒ‚[ƒh");
+            //Positioningè¨­å®š
+            EditorGUILayout.LabelField("ãƒã‚¸ã‚·ãƒ§ãƒ³ãƒ¢ãƒ¼ãƒ‰");
             PositioningModeInt = EditorGUILayout.Popup("", PositioningModeInt, PositioningModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
-            //‰ñ“]p¨‚Ìw’è
-            EditorGUILayout.LabelField("Rotation‹““®");
+            //å›è»¢å§¿å‹¢ã®æŒ‡å®š
+            EditorGUILayout.LabelField("RotationæŒ™å‹•");
             RotationModeInt = EditorGUILayout.Popup("", RotationModeInt, RotationModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
             if (RotationModeInt == 1)
             {
-                Rotatesnap = EditorGUILayout.Vector2Field("ƒXƒiƒbƒv‚ÌŠp“x", Rotatesnap, GUILayout.Width(UISize * 2));
+                Rotatesnap = EditorGUILayout.Vector2Field("ã‚¹ãƒŠãƒƒãƒ—ã®è§’åº¦", Rotatesnap, GUILayout.Width(UISize * 2));
             }
             else if (RotationModeInt == 2)
             {
-                Rotaterandam = EditorGUILayout.Vector3Field("ƒ‰ƒ“ƒ_ƒ€‚ÌŠp“x", Rotaterandam, GUILayout.Width(UISize * 2));
+                Rotaterandam = EditorGUILayout.Vector3Field("ãƒ©ãƒ³ãƒ€ãƒ ã®è§’åº¦", Rotaterandam, GUILayout.Width(UISize * 2));
             }
             EditorGUILayout.Space(5);
 
 
-            //À•W‚Ìw’è
-            EditorGUILayout.LabelField("Position‹““®");
+            //åº§æ¨™ã®æŒ‡å®š
+            EditorGUILayout.LabelField("PositionæŒ™å‹•");
             PositionModeInt = EditorGUILayout.Popup("", PositionModeInt, PositionModes, GUILayout.Width(UISize * 2));
 
             EditorGUILayout.Space(5);
 
             if (PositionModeInt == 1)
             {
-                Positionsnap = EditorGUILayout.Vector3Field("ƒXƒiƒbƒv‚ÌŠp“x", Positionsnap, GUILayout.Width(UISize * 2));
+                Positionsnap = EditorGUILayout.Vector3Field("ã‚¹ãƒŠãƒƒãƒ—ã®è§’åº¦", Positionsnap, GUILayout.Width(UISize * 2));
             }
             else if (PositionModeInt == 2)
             {
-                Positionrandam = EditorGUILayout.Vector3Field("ƒ‰ƒ“ƒ_ƒ€‚ÌŠp“x", Positionrandam, GUILayout.Width(UISize * 2));
+                Positionrandam = EditorGUILayout.Vector3Field("ãƒ©ãƒ³ãƒ€ãƒ ã®è§’åº¦", Positionrandam, GUILayout.Width(UISize * 2));
             }
 
             EditorGUILayout.Space(5);
 
 
 
-            //-----‘Œ¸ƒ{ƒ^ƒ“‰¡•À‚Ñ
+            //-----å¢—æ¸›ãƒœã‚¿ãƒ³æ¨ªä¸¦ã³
             GUILayout.BeginHorizontal();
 
-            if (GUILayout.Button("|", GUILayout.Width(UISize)))
+            if (GUILayout.Button("ï¼", GUILayout.Width(UISize)))
             {
                 if (SetPrefabs.Count > 1)
                 {
@@ -187,7 +187,7 @@ public class PropPlacer_Editor : EditorWindow
                 }
             }
 
-            if (GUILayout.Button("{", GUILayout.Width(UISize)))
+            if (GUILayout.Button("ï¼‹", GUILayout.Width(UISize)))
             {
                 SetPrefabs.Add(null);
                 PrefabTex.Add(null);
@@ -195,7 +195,7 @@ public class PropPlacer_Editor : EditorWindow
             }
 
             GUILayout.EndHorizontal();
-            //-----‘Œ¸ƒ{ƒ^ƒ“‰¡•À‚ÑƒIƒƒŠ
+            //-----å¢—æ¸›ãƒœã‚¿ãƒ³æ¨ªä¸¦ã³ã‚ªãƒ¯ãƒª
 
             if (RunStatus)
             {
@@ -216,14 +216,14 @@ public class PropPlacer_Editor : EditorWindow
 
             EditorGUILayout.Space(5);
 
-            if (GUILayout.Button("ƒŒƒbƒcƒvƒŒ[ƒXI(F)", GUILayout.Width(UISize * 2)))
+            if (GUILayout.Button("ãƒ¬ãƒƒãƒ„ãƒ—ãƒ¬ãƒ¼ã‚¹ï¼(F)", GUILayout.Width(UISize * 2)))
             {
                 PlaceProp();
             }
 
             EditorGUILayout.Space(5);
 
-            //UISize’²®@30ˆÈ‰º‚É‚Ío—ˆ‚È‚¢
+            //UISizeèª¿æ•´ã€€30ä»¥ä¸‹ã«ã¯å‡ºæ¥ãªã„
             UISize = EditorGUILayout.IntField("UISize", UISize, GUILayout.Width(UISize * 2));
             if (UISize < 29)
             {
@@ -231,18 +231,18 @@ public class PropPlacer_Editor : EditorWindow
             }
 
             EditorGUILayout.EndVertical();
-            //=====ƒƒjƒ…[c”z’uƒIƒƒŠ
+            //=====ãƒ¡ãƒ‹ãƒ¥ãƒ¼ç¸¦é…ç½®ã‚ªãƒ¯ãƒª
         }
 
         EditorGUILayout.EndHorizontal();
-        //-----‘S‘Ì‰¡”z’uƒIƒƒŠ
+        //-----å…¨ä½“æ¨ªé…ç½®ã‚ªãƒ¯ãƒª
 
-        //ƒS[ƒXƒg‚Ì•ÏX
+        //ã‚´ãƒ¼ã‚¹ãƒˆã®å¤‰æ›´
         if (GUI.changed)
         {
             GhostReload();
 
-            //ƒTƒ€ƒlƒCƒ‹XV
+            //ã‚µãƒ ãƒã‚¤ãƒ«æ›´æ–°
             for (int i = 0; i < SetPrefabs.Count; i++)
             {
                 if (SetPrefabs[i] != null)
@@ -269,7 +269,7 @@ public class PropPlacer_Editor : EditorWindow
 
         if (SetPrefabs.Count > 0)
         {
-            //‰½‚à‚µ‚È‚¢
+            //ä½•ã‚‚ã—ãªã„
         }
         else
         {
@@ -281,9 +281,9 @@ public class PropPlacer_Editor : EditorWindow
 
     private void PropPlacer_Update(SceneView sceneView)
     {
-        //update‚ÅÀs
+        //updateã§å®Ÿè¡Œ
 
-        //Nullƒ`ƒFƒbƒN’B
+        //Nullãƒã‚§ãƒƒã‚¯é”
         if (GhostProp == null)
         {
             GhostReload();
@@ -294,16 +294,16 @@ public class PropPlacer_Editor : EditorWindow
         }
 
         //Key input
-        //ƒVƒ‡[ƒgƒJƒbƒgƒL[
+        //ã‚·ãƒ§ãƒ¼ãƒˆã‚«ãƒƒãƒˆã‚­ãƒ¼
         var keyinput = Event.current;
 
-        //ƒS[ƒXƒg‚ÌˆÊ’u‚ğXV‚·‚é
+        //ã‚´ãƒ¼ã‚¹ãƒˆã®ä½ç½®ã‚’æ›´æ–°ã™ã‚‹
         if (SetPrefabs[SelectPrefabNum] != null)
         {
             //PositionUpdate
              if (PositioningModeInt == 0)
             {
-                //ƒ}ƒEƒXƒ‚[ƒh
+                //ãƒã‚¦ã‚¹ãƒ¢ãƒ¼ãƒ‰
                 Vector3 subtract = new Vector3(Event.current.mousePosition.x, Screen.height - Event.current.mousePosition.y - 40, 0);
                 Ray ray = SceneRaycam.ScreenPointToRay(subtract);
                 RaycastHit hit;
@@ -323,7 +323,7 @@ public class PropPlacer_Editor : EditorWindow
             }
             else if (PositioningModeInt == 1)
             {
-                //‹“_ƒ‚[ƒh
+                //è¦–ç‚¹ãƒ¢ãƒ¼ãƒ‰
                 var ray = SceneRaycam.ViewportPointToRay(ViewPos);
                 RaycastHit hit;
 
@@ -346,12 +346,12 @@ public class PropPlacer_Editor : EditorWindow
              //RotationUpdate
              if (RotationModeInt == 0)
             {
-                //ƒIƒŠƒWƒiƒ‹
+                //ã‚ªãƒªã‚¸ãƒŠãƒ«
 
             }
              else if (RotationModeInt == 1)
             {
-                //ƒXƒiƒbƒv
+                //ã‚¹ãƒŠãƒƒãƒ—
 
                 var tra = GhostProp.transform;
                 var targetY = ParentProp.transform.InverseTransformPoint(SceneRaycam.transform.position);
@@ -367,7 +367,7 @@ public class PropPlacer_Editor : EditorWindow
             }
             else if (RotationModeInt == 2)
             {
-                //ƒ‰ƒ“ƒ_ƒ€
+                //ãƒ©ãƒ³ãƒ€ãƒ 
                 GhostProp.transform.rotation = Quaternion.Euler(RandamResult);
             }
 
@@ -378,20 +378,20 @@ public class PropPlacer_Editor : EditorWindow
     {
         Transform parent = null;
 
-        //e‚Ìİ’è
+        //è¦ªã®è¨­å®š
         if (PrefabPlacepoints[SelectPrefabNum] != null)
         {
-            //ƒXƒ|[ƒ“æ‚ªŒÂ•Êw’è‚³‚ê‚Ä‚¢‚éê‡
-            //ŒÂ•Êw’è‚ª—Dæ‚³‚ê‚é@else if‚È‚±‚Æ‚É’ˆÓ
+            //ã‚¹ãƒãƒ¼ãƒ³å…ˆãŒå€‹åˆ¥æŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
+            //å€‹åˆ¥æŒ‡å®šãŒå„ªå…ˆã•ã‚Œã‚‹ã€€else ifãªã“ã¨ã«æ³¨æ„
             parent = PrefabPlacepoints[SelectPrefabNum];
         }
         else if (DefaultPoint != null)
         {
-            //ƒXƒ|[ƒ“æ‚ªŒÂ•Êw’è‚³‚ê‚Ä‚¨‚ç‚¸A‹¤’Êe‚ªİ’è‚³‚ê‚Ä‚¢‚éê‡
+            //ã‚¹ãƒãƒ¼ãƒ³å…ˆãŒå€‹åˆ¥æŒ‡å®šã•ã‚Œã¦ãŠã‚‰ãšã€å…±é€šè¦ªãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
             parent = DefaultPoint;
         }
 
-        //ƒXƒ|[ƒ“ˆ—
+        //ã‚¹ãƒãƒ¼ãƒ³å‡¦ç†
         if (parent != null)
         {
             LatestProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]);
@@ -403,30 +403,30 @@ public class PropPlacer_Editor : EditorWindow
         }
         else
         {
-            Debug.LogError("ƒXƒ|[ƒ“æ‚ª–¢w’è‚Å‚·BˆêŠ‡w’è‚©ŒÂ•Êw’è‚ğ‚µ‚Ä‚­‚¾‚³‚¢B Says PYEditor/PropPlacerDB");
+            Debug.LogError("ã‚¹ãƒãƒ¼ãƒ³å…ˆãŒæœªæŒ‡å®šã§ã™ã€‚ä¸€æ‹¬æŒ‡å®šã‹å€‹åˆ¥æŒ‡å®šã‚’ã—ã¦ãã ã•ã„ã€‚ Says PYEditor/PropPlacerDB");
         }
     }
 
     private void GhostReload()
     {
-        //e‚ğ¶¬
+        //è¦ªã‚’ç”Ÿæˆ
         if (ParentProp == null)
         {
             ParentProp = new GameObject("Dont delete this_PYEditor");
         }
         Debug.Log("Ghost Refresh say PYEditor");
-        //ƒS[ƒXƒg‚ÌƒŠƒ[ƒh—p
+        //ã‚´ãƒ¼ã‚¹ãƒˆã®ãƒªãƒ­ãƒ¼ãƒ‰ç”¨
         if (SetPrefabs[SelectPrefabNum] != null)
         {
             DestroyImmediate(GhostProp);
 
             GhostProp = (GameObject)PrefabUtility.InstantiatePrefab(SetPrefabs[SelectPrefabNum]) as GameObject;
 
-            //ƒS[ƒXƒg‚Ì‰Šú‰»
+            //ã‚´ãƒ¼ã‚¹ãƒˆã®åˆæœŸåŒ–
             GhostProp.transform.SetParent(ParentProp.transform);
             GhostProp.transform.position = new Vector3(0, 0, 0);
 
-            //ƒS[ƒXƒg‚ÌƒRƒ‰ƒCƒ_[‚ğíœ
+            //ã‚´ãƒ¼ã‚¹ãƒˆã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å‰Šé™¤
             Collider[] GhostinCollider = GhostProp.GetComponentsInChildren<Collider>();
             foreach (Collider coli in GhostinCollider)
             {
@@ -462,7 +462,7 @@ public class PropPlacer_Editor : EditorWindow
 
     private Vector3 Vec3Round(Vector3 vecin, float cut = 0, Vector3 veccut = default(Vector3))
     {
-        //veccutÈ—ª‚Í(0,0,0)‚Å‰Šú‰»‚³‚ê‚é
+        //veccutçœç•¥æ™‚ã¯(0,0,0)ã§åˆæœŸåŒ–ã•ã‚Œã‚‹
         Vector3 dst = new Vector3(
                                             Mathf.Round(vecin.x / (cut + veccut.x)) * (cut + veccut.x),
                                             Mathf.Round(vecin.y / (cut + veccut.y)) * (cut + veccut.y),
