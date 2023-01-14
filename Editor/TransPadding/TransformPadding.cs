@@ -54,9 +54,9 @@ public class TransformPadding : EditorWindow
             }
             else
             {
-                MeshOnly = EditorGUILayout.Toggle("メッシュ以外を無視", MeshOnly);
+                MeshOnly = EditorGUILayout.Toggle("MeshRenderer以外を無視", MeshOnly, GUILayout.ExpandWidth(true));
                 EditorGUILayout.Space(10);
-                SuruDoubleRenderer = EditorGUILayout.Toggle("多重構造のメッシュを無視", SuruDoubleRenderer);
+                SuruDoubleRenderer = EditorGUILayout.Toggle("多重構造のMeshRendererを無視", SuruDoubleRenderer);
                 EditorGUILayout.Space(10);
             }
             ToScale = EditorGUILayout.Toggle("連動してScaleも変える",ToScale);
