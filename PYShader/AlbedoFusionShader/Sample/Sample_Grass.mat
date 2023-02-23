@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: TestPiller 2
-  m_Shader: {fileID: 4800000, guid: ab04f2e348f9d27498b88e02a6914292, type: 3}
-  m_ShaderKeywords: 
+  m_Name: Sample_Grass
+  m_Shader: {fileID: 4800000, guid: b9f5cefb8407b0c42baf0afb60d31836, type: 3}
+  m_ShaderKeywords: _ALPHATEST_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: d5d142b04e376134cb0e8b2d0dc282ed, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -37,11 +37,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0ca650eeca51e5147a1770137cae0d07, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: d87079c2f0aabbe47a5d669573c0e105, type: 3}
+        m_Scale: {x: 4, y: 4}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -63,39 +63,48 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SubTex:
+        m_Texture: {fileID: 2800000, guid: caa5a7ddba4e9044ebb9887b7c6d8baf, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 6.33}
     - _TexGreen:
-        m_Texture: {fileID: 2800000, guid: bb8d4d8430474c44da0c44db8d49685e, type: 3}
-        m_Scale: {x: 4, y: 4}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TexRed:
-        m_Texture: {fileID: 2800000, guid: d87079c2f0aabbe47a5d669573c0e105, type: 3}
-        m_Scale: {x: 2, y: 2}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _BlendDegree: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DiscardLine: 0.436
+    - _DiscardLine: 0.4
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 1
-    - _Glossiness_G: 0
-    - _Glossiness_R: 1
+    - _Glossiness: 0
+    - _Glossiness_G: 0.5
+    - _Glossiness_R: 0.5
     - _GlossyReflections: 1
-    - _Metallic: 0.3
+    - _LayerMode: 0
+    - _MainTexUV: 0
+    - _Metallic: 0
     - _Metallic_G: 0
     - _Metallic_R: 0
     - _MixStrength: 1
-    - _Mode: 0
+    - _Mode: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ShadeStrength: 0
+    - _ShadeStrength: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _SubTexScrollSpeed: 0.22
+    - _SubTexUV: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadeColor: {r: 1, g: 1, b: 1, a: 0.2784314}
+    - _ShadeColor: {r: 1, g: 1, b: 1, a: 1}
