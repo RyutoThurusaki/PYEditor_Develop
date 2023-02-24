@@ -24,10 +24,11 @@ https://github.com/RyutoThurusaki/PYEditor_Develop.git
 
 
 # 完成品  
+### エディタ拡張
 - InactiveCollidersearcher  
 └シーン内のInactiveなコライダーをコンソールに列挙するやーつ
 - GlobalRotationResetter  
-└オブジェクトsのRotationをグローバル軸でどうこうするやーつ
+└オブジェクトsのグローバルRotationを指定値に書き換えするやーつ
 - MaterialRandamizer  
 └オブジェクトsのマテリアルをn個のマテリアルからランダムに設定してくやーつ
 - PrefabReplacer  
@@ -37,7 +38,13 @@ https://github.com/RyutoThurusaki/PYEditor_Develop.git
 - TransPadding  
 └オブジェクトsの距離感そのままに間隔を広げたり狭めたりするやーつ
 - SceneSelector  
-└Assets/Scenes 直下のシーンファイルを一覧表示、ワンクリックで開いたりするやーつ
+└Assets/Scenes 直下のシーンファイルを一覧表示、ワンクリックで開いたりするやーつ  
+  
+### シェーダー
+- TextureMix  
+└頂点カラーによってテクスチャと質感をミックスするやーつ　Albedo、Normal、Metaric、Smoothnessを各2つづつブレンドが可能
+- AlbedoFusionShader  
+└２つのテクスチャをAdditiveやMultiplyでミックスするやーつ　テクスチャ1はUV1、テクスチャ2はUV4を使用。テクスチャ2はUVスクロールも可能
 
 一部は説明書がついてたりついてなかったりします。  
 また、拡張内で特筆無い限り基本Undoが実装されています。
@@ -49,3 +56,4 @@ Copyright (c) 2022 RyutoThurusaki
 This software is released under the MIT license.  
 https://opensource.org/licenses/MIT
 
+一部のシェーダーや拡張はライセンスの例外があるので必要に応じてソースコード内の原文を確認してください。
