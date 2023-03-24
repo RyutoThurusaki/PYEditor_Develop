@@ -1,23 +1,22 @@
-﻿Shader "PYShader/AlbedoFusionShader"
+﻿Shader "PYShader/Powderfall"
 {
     Properties
     {
-        [Enum(Additive,0,Multiply,1)] _LayerMode("LayerMode", Float) = 0
+        _Color("Color", Color) = (1,1,1,1)
+        [HDR]_EmissiveColor("EmissionColor", Color) = (1,1,1,1)
+        _ShadeColor("ShadeColor", Color) = (0.8,0.8,0.8,1)
 
         [Space(20)]
-        _MainTex("Albedo_A_UV1 (RGB)", 2D) = "white" {}
+        _SnowDetail("Detail (RGB)", 2D) = "black" {}
+        [Normal]
+        _Noise("Noise (Normal)", 2D) = "bump" {}
 
         [Space(10)]
-        _SubTex("Albedo_B_UV4 (RGB)", 2D) = "black" {}
-
-        [Space(20)]
-        _Glossiness("Smoothness", Range(0,1)) = 0.5
-        _Metallic("Metallic", Range(0,1)) = 0.0
-
-        _BlendDegree("BlendDegree", Range(0,1)) = 0.5
-
-        [Space(20)]
-        _SubTexScrollSpeed("SubTex Scroll Speed", Range(-5,5)) = 0.5
+        _BaseSmoothness("BaseSmoothness", Range(0,1)) = 0.5
+        _BaseMetallic("BaseMetallic", Range(0,1)) = 0.0
+         [Space(10)]
+        _SubSmoothness("SubSmoothness", Range(0,1)) = 0.5
+        _SubMetallic("SubMetallic", Range(0,1)) = 0.0
     }
         SubShader
         {
@@ -32,19 +31,22 @@
             #pragma target 3.0
 
             sampler2D _MainTex;
-            sampler2D _SubTex;
+            sampler2D _SnowDetail;
 
             struct Input
             {
                 float2 uv_MainTex;
-                float2 uv4_SubTex;
+                float2 uv_SnowDetail;
             };
 
-            half _Glossiness;
-            half _Metallic;
-            half _BlendDegree;
-            half _LayerMode;
-            half _SubTexScrollSpeed;
+            half _BaseSmoothness;
+            half _BaseMetallic;
+
+            half _SubSmoothness;
+            half _SubMetallic;
+
+            fixed4 _Color;
+            fixed4 _EmissiveColor;
 
             // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
             // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -56,15 +58,15 @@
             void surf(Input IN, inout SurfaceOutputStandard o)
             {
                 // Albedo comes from a texture tinted by color
-                float2 scrollOffset = _Time.y * _SubTexScrollSpeed;
-                fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * (tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _BlendDegree * (_LayerMode)) //乗算Multiply
-                    + (tex2D(_MainTex, IN.uv_MainTex) + (tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _BlendDegree)) * (1 - _LayerMode); //加算Additive
-                o.Albedo = c.rgb;
+                float2 scrollOffset = (1.222,1.222);
+                o.Albedo = _Color;
+                o.Emission = _EmissiveColor * (tex2D(_SnowDetail, IN.uv_SnowDetail) + tex2D(_SnowDetail, IN.uv_SnowDetail * scrollOffset));
 
                 // Metallic and smoothness come from slider variables
-                o.Metallic = _Metallic;
-                o.Smoothness = _Glossiness;
-                o.Alpha = c.a;
+                o.Metallic = _BaseMetallic + _SubMetallic * tex2D(_SnowDetail, IN.uv_SnowDetail);
+                o.Smoothness = _BaseSmoothness + _SubSmoothness * tex2D(_SnowDetail, IN.uv_SnowDetail);
+
+                o.Alpha = 1;
             }
             ENDCG
         }

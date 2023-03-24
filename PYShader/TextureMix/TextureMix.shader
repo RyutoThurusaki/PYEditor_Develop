@@ -1,4 +1,4 @@
-Shader "Standard/TextureMix"
+Shader "PYShader/TextureMix"
 {
     Properties
     {
