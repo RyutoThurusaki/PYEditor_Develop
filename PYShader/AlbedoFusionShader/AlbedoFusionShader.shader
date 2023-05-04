@@ -5,9 +5,13 @@
         [Enum(Additive,0,Multiply,1)] _LayerMode("LayerMode", Float) = 0
 
         [Space(20)]
+        [HDR]
+        _MainColor ("MainColor", Color) = (1,1,1,1)
         _MainTex("Albedo_A_UV1 (RGB)", 2D) = "white" {}
 
         [Space(10)]
+        [HDR]
+        _SubColor ("SubColor", Color) = (1,1,1,1)
         _SubTex("Albedo_B_UV4 (RGB)", 2D) = "black" {}
 
         [Space(20)]
@@ -46,6 +50,9 @@
             half _LayerMode;
             half _SubTexScrollSpeed;
 
+            fixed4 _SubColor;
+            fixed4 _MainColor;
+
             // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
             // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
             // #pragma instancing_options assumeuniformscaling
@@ -57,8 +64,8 @@
             {
                 // Albedo comes from a texture tinted by color
                 float2 scrollOffset = _Time.y * _SubTexScrollSpeed;
-                fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * (tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _BlendDegree * (_LayerMode)) //乗算Multiply
-                    + (tex2D(_MainTex, IN.uv_MainTex) + (tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _BlendDegree)) * (1 - _LayerMode); //加算Additive
+                fixed4 c = (tex2D(_MainTex, IN.uv_MainTex) * _MainColor ) * ((tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _SubColor) * _BlendDegree * (_LayerMode)) //乗算Multiply
+                    + ((tex2D(_MainTex, IN.uv_MainTex) * _MainColor) + ((tex2D(_SubTex, IN.uv4_SubTex.xy + scrollOffset) * _SubColor)* _BlendDegree)) * (1 - _LayerMode); //加算Additive
                 o.Albedo = c.rgb;
 
                 // Metallic and smoothness come from slider variables
