@@ -38,7 +38,9 @@ https://github.com/RyutoThurusaki/PYEditor_Develop.git
 - TransPadding  
 └オブジェクトsの距離感そのままに間隔を広げたり狭めたりするやーつ
 - SceneSelector  
-└Assets/Scenes 直下のシーンファイルを一覧表示、ワンクリックで開いたりするやーつ  
+└Assets/Scenes 直下のシーンファイルを一覧表示、ワンクリックで開いたりするやーつ
+- 3DCursor
+└Blenderの3Dカーソルを移植して、オブジェクトの移動を便利にしたやーつ
   
 ### シェーダー
 - TextureMix  
