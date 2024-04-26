@@ -47,7 +47,7 @@ public class Objects2Prefab_Replacer : EditorWindow
             obj.transform.localScale = place.transform.localScale;
 
             var parent = place.transform.parent;
-            obj.transform.parent = parent.transform;
+            if (parent != null) { obj.transform.parent = parent.transform; }
 
             obj.name = place.name + Addname;
 
