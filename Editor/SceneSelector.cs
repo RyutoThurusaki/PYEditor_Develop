@@ -15,7 +15,7 @@ public class SceneSelector : EditorWindow
     //シーンを検索するフォルダ
     string Scenespath = "Assets/Scenes/";
 
-    [MenuItem("Tools/SceneSelector")]
+    [MenuItem("PYEditor/SceneSelector")]
     private static void Create()
     {
         GetWindow<SceneSelector>("SceneSelector");

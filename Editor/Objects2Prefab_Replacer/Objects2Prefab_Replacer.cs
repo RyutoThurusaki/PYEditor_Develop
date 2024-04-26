@@ -1,6 +1,5 @@
 ﻿# if UNITY_EDITOR
 
-using HarmonyLib;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -8,7 +7,7 @@ using UnityEngine;
 
 public class Objects2Prefab_Replacer : EditorWindow
 {
-    [MenuItem("Tools/Objects2Prefab_Replacer")]
+    [MenuItem("PYEditor/Objects2Prefab_Replacer")]
 
     public static void ShowWindow()
     {
