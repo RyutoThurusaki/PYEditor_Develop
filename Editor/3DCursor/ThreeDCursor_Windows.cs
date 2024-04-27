@@ -104,6 +104,8 @@ public class ThreeDCursor_SettingWindow : EditorWindow
 
         GUILayout.Space(5);
 
+        EditorGUI.BeginChangeCheck();//~~~~~~~~~~~~
+
         //Settings
         GUILayout.Label("Settings");
         Bindmode = (KEY_BINDMODE)EditorGUILayout.EnumPopup("Select Bind ver", Bindmode);
@@ -111,7 +113,7 @@ public class ThreeDCursor_SettingWindow : EditorWindow
 
         GUILayout.Space(10);
 
-        if (EditorGUI.EndChangeCheck())
+        if (EditorGUI.EndChangeCheck())//~~~~~~~~~~~~
         {
             EditorPrefs.SetInt("3DC_Bindmode", ((int)Bindmode));
             EditorPrefs.SetInt("3DC_Languagemode", ((int)Languagemode));
@@ -131,6 +133,7 @@ public class ThreeDCursor_SettingWindow : EditorWindow
     private void Update_GetKeyInput(SceneView scene)
     {
         var Currentkey = Event.current;
+        if (Currentkey.keyCode == KeyCode.None) { return; }
 
         if (Currentkey.type == EventType.KeyDown)
         {
@@ -146,6 +149,9 @@ public class ThreeDCursor_SettingWindow : EditorWindow
             if (Currentkey.keyCode == KeyCode.S){alphabet = false;}
             ShowDebug(Currentkey.ToString());
         }
+
+        if (Currentkey.keyCode != KeyCode.LeftShift && Currentkey.keyCode != KeyCode.S) 
+        { shift = false; alphabet = false;  }
 
         if (shift && alphabet) 
         { 
