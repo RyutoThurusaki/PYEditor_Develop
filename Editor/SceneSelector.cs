@@ -26,6 +26,8 @@ public class SceneSelector : EditorWindow
         Sceneicon = (Texture2D)EditorGUIUtility.Load("d_SceneAsset Icon");
         Foldericon = (Texture2D)EditorGUIUtility.Load("d_Folder Icon");
 
+        Scenespath = EditorPrefs.GetString("SceneSelectorPath", Scenespath);
+
         SceneSearch();
     }
 
@@ -69,6 +71,13 @@ public class SceneSelector : EditorWindow
 
         EditorGUILayout.Space(10);
 
+        EditorGUI.BeginChangeCheck();//~~~~~~~~~
+        Scenespath = EditorGUILayout.TextField("検索先", Scenespath);
+        if (EditorGUI.EndChangeCheck())//~~~~~~~~~
+        {
+            EditorPrefs.SetString("SceneSelectorPath", Scenespath);
+        };
+
         if (GUILayout.Button("リロード"))
         {
             SceneSearch();
@@ -76,7 +85,7 @@ public class SceneSelector : EditorWindow
 
         EditorGUILayout.Space(10);
 
-        EditorGUILayout.HelpBox(Scenespath + "のシーンを一覧表示する拡張 \\ クリックでそのシーンを開きます(Windowsのみ対応)", MessageType.Info);
+        EditorGUILayout.HelpBox("指定したPath配下のシーンを一覧表示する拡張 \\ クリックでそのシーンを開きます(Windowsのみ対応)", MessageType.Info);
 
         //ライトベイクボタン欲しい
         //Lightmaping.Bakeはうまくいかなかったメモ
